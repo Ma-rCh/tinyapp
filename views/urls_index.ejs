@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <title>TinyApp</title>
+</head>
+
+<body>
+  <% include ./partials/_header %>
+  <% if (!user) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    Please <a href="/login" class="alert-link">log in</a> to have full access
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <% } %>
+  <% if (Object.keys(urls).length === 0 && user) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    Please <a href="/urls/new" class="alert-link">create new shortURLs</a> to have your list!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <% } %>
+  <main style="margin: 1em;">
+    <h3 class="text-center">My URLs</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Short URL</th>
+          <th scope="col">Long URL</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let url in urls) { %>
+        <tr>
+          <td><%= url %></td>
+          <td><%= urls[url] %></td>
+          <td>
+            <form action='/urls/<%= url %>' method='GET'>
+              <input class='text-capitalize btn-outline-primary btn' value='edit' type='submit'>
+            </form>
+          </td>
+          <td>
+            <form action='/urls/<%= url %>/delete?_method=DELETE' method='POST'>
+              <button class='text-capitalize btn-outline-danger btn'>delete</button>
+            </form>
+          </td>
+        </tr>
+        </form>
+        <% } %>
+      </tbody>
+    </table>
+  </main>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
