@@ -8,7 +8,7 @@ const cookieSession = require('cookie-session');
 const { getUserByEmail, generateRandomString, urlsForUser } = require('./helpers');
 const methodOverride = require('method-override');
 
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
 
 app.use(cookieSession({
   name: 'session',
@@ -58,9 +58,17 @@ const users = {
 
 //root
 app.get("/", (req, res) => {
-  if (req.session.user_id) {
-    res.redirect('/urls');
+  //
+  const cookieUserId = req.session.user_id;
+
+  // if (req.session.user_id) {
+    if ( users[cookieUserId] ) {
+    console.log('redirect to url' + users[cookieUserId] );
+
+      res.redirect('/urls');
+    
   } else {
+    console.log('redirect to login');
     res.redirect('/login');
   }
 });
@@ -179,13 +187,10 @@ app.post("/register", (req, res) => {
 
 //Login
 app.get("/login", (req, res) => {
-  if (!req.session.user_id) {
-    let templateVars = {
-      user: users[req.session.user_id]
-    };
-    res.render("login", templateVars);
-  } else {
+  if (req.session.user_id && users[req.session.user_id]) {
     res.redirect('/urls');
+  } else { 
+    res.render("login",{ user: null });
   }
 });
 app.post("/login", (req, res) => {
